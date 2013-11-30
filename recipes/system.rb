@@ -2,6 +2,7 @@
 # Cookbook Name:: monitor
 # Recipe:: system
 #
+
 # Checks load, CPU, Disk and RAM, and sends notifications via mail.
 #
 
