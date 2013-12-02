@@ -5,20 +5,16 @@
 # Checks load, CPU, Disk and RAM, and sends notifications via mail.
 #
 
-%w( load cpu disk ram swap ).each do |type|
+%w( load cpu disk ram ).each do |type|
 
-  remote_file "/etc/sensu/plugins/check-#{type}.#{type == 'swap' ? 'sh' : 'rb'}" do
-    if type == 'swap'
-      source "https://raw.github.com/sensu/sensu-community-plugins/master/plugins/system/check-#{type}.sh"
-    else
-      source "https://raw.github.com/sensu/sensu-community-plugins/master/plugins/system/check-#{type}.rb"
-    end
+  remote_file "/etc/sensu/plugins/check-#{type}.rb" do
+    source "https://raw.github.com/sensu/sensu-community-plugins/master/plugins/system/check-#{type}.rb"
     mode 0755
   end
 
   sensu_check "system_#{type}" do
     type 'status'
-    command type == 'swap' ? "check-#{type}.sh" : "check-#{type}.rb"
+    command "check-#{type}.rb"
     handlers %w( mailer twiliosms )
     subscribers [ 'all' ]
   end

@@ -12,7 +12,7 @@ end
 
 sensu_check "processes_chef_client" do
   type 'status'
-  command "check-procs.rb -p chef-client -w 2 -c 2"
+  command "check-procs.rb -p chef-client -W 1"
   handlers [ 'mailer' ]
   subscribers [ 'all' ]
 end
