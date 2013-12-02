@@ -20,3 +20,7 @@
   end
 
 end
+
+sensu_check 'system_swap' do
+  action :delete
+end
