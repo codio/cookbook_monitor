@@ -2,8 +2,7 @@
 # Cookbook Name:: monitor
 # Recipe:: system
 #
-
-# Checks load, CPU, Disk and RAM, and sends notifications via mail.
+# Adds system level checks.
 #
 
 include_recipe "monitor::default"
