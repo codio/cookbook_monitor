@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: mail_handler
+# Recipe:: handler_mail
 #
 # Adds a mailer handler.
 #
@@ -17,7 +17,7 @@ end
 sensu_handler "mailer" do
   type "pipe"
   command "/etc/sensu/handlers/mailer.rb"
-  severities ["ok", "warning", "critical", "unknown"]
+  severities %w( ok warning critical unknown )
 end
 
 # Fetch the SMTP username and password from the `sensu/mailer` encrypted data bag.
@@ -30,8 +30,8 @@ search(:sensu, 'id:mailer') do |s|
             smtp_address:   node[:monitor][:mailer][:smtp_address],
             smtp_port:      node[:monitor][:mailer][:smtp_port],
             smtp_domain:    node[:monitor][:mailer][:smtp_domain],
-            smtp_username:  bag['username'],
-            smtp_password:  bag['password']
+            smtp_username:  bag['smtp_username'],
+            smtp_password:  bag['smtp_password']
   end
 end
 

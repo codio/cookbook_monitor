@@ -1,13 +1,13 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: system
+# Recipe:: check_system
 #
 # Checks load, CPU, Disk and RAM, and sends notifications via mail.
 #
 
 %w( load cpu disk ram swap ).each do |type|
 
-  remote_file "/etc/sensu/plugins/check-#{type}.rb" do
+  remote_file "/etc/sensu/plugins/check-#{type}.#{type == 'swap' ? 'sh' : 'rb'}" do
     if type == 'swap'
       source "https://raw.github.com/sensu/sensu-community-plugins/master/plugins/system/check-#{type}.sh"
     else
@@ -19,7 +19,7 @@
   sensu_check "system_#{type}" do
     type 'status'
     command type == 'swap' ? "check-#{type}.sh" : "check-#{type}.rb"
-    handlers [ 'mailer' ]
+    handlers %w( mailer twiliosms )
     subscribers [ 'all' ]
   end
 
