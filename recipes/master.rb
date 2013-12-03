@@ -17,6 +17,14 @@
 # limitations under the License.
 #
 
+# If an encrypted data bag called sensu/dashboard exists, then use that for the dashboard auth.
+search(:sensu, 'id:dashboard') do |s|
+  attrs = Chef::EncryptedDataBagItem.load('sensu', 'dashboard')
+
+  node.override[:sensu][:dashboard][:user] = attrs['username']
+  node.override[:sensu][:dashboard][:password] = attrs['password']
+end
+
 include_recipe "sensu::rabbitmq"
 include_recipe "sensu::redis"
 
