@@ -17,10 +17,7 @@
     command "check-#{type}.rb"
     handlers %w( mailer twiliosms )
     subscribers [ 'all' ]
+    additional occurrences: 2
   end
 
-end
-
-sensu_check 'system_swap' do
-  action :delete
 end
