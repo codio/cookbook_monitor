@@ -1,7 +1,7 @@
 *.lock
 .cache
 .bundle
-.librarian
+Berksfile.lock
 .kitchen/
 .kitchen.local.yml*
 tmp/
