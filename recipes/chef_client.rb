@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: check_chef_client
+# Recipe:: chef_client
 #
 # Checks that the chef-client process is up and running.
 #

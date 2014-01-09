@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: handler_mail
+# Recipe:: _mailer_handler
 #
 # Adds a mailer handler.
 #
@@ -8,16 +8,11 @@
 sensu_gem 'mail'
 
 # Fetch the `mailer` handler script from the sensu/sensu-community-plugins repo.
+url = 'https://raw.github.com/sensu/sensu-community-plugins/master/handlers/notification/mailer.rb'
 remote_file '/etc/sensu/handlers/mailer.rb' do
-  source 'https://raw.github.com/sensu/sensu-community-plugins/master/handlers/notification/mailer.rb'
+  source url
   mode 0755
-end
-
-# Create the `mailer` handler.
-sensu_handler "mailer" do
-  type "pipe"
-  command "/etc/sensu/handlers/mailer.rb"
-  severities %w( ok warning critical unknown )
+  only_if "curl -s -o /dev/null -w \"%{http_code}\" #{url} | grep 200"
 end
 
 # Fetch the SMTP username and password from the `sensu/mailer` encrypted data bag.
@@ -35,3 +30,9 @@ search(:sensu, 'id:mailer') do |s|
   end
 end
 
+# Create the handler.
+sensu_handler "mailer" do
+  type "pipe"
+  command "/etc/sensu/handlers/mailer.rb"
+  severities %w( ok warning critical unknown )
+end

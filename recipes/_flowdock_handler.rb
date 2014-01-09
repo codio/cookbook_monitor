@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: flowdock_handler
+# Recipe:: _flowdock_handler
 #
 # Adds a Flowdock handler.
 #

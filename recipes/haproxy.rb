@@ -17,7 +17,22 @@
 # limitations under the License.
 #
 
-include_recipe "monitor::_haproxy"
+include_recipe "monitor::default"
+
+sensu_gem "haproxy"
+
+plugin_path = "/etc/sensu/plugins/check-haproxy.rb"
+
+cookbook_file plugin_path do
+  source "plugins/check-haproxy.rb"
+  mode 0755
+end
+
+node.override["monitor"]["sudo_commands"] =
+  node["monitor"]["sudo_commands"] + [plugin_path]
+
+include_recipe "monitor::_sudo"
+
 
 sensu_check "haproxy_services" do
   command "sudo check-haproxy.rb -s :::haproxy_services::: -w :::haproxy_warning|75::: -c :::haproxy_critical|50:::"

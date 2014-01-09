@@ -1,9 +1,11 @@
 #
 # Cookbook Name:: monitor
-# Recipe:: check_system
+# Recipe:: system
 #
 # Checks load, CPU, Disk and RAM, and sends notifications via mail.
 #
+
+include_recipe "monitor::default"
 
 %w( load cpu disk ram ).each do |type|
 
@@ -17,7 +19,7 @@
   sensu_check "system_#{type}" do
     type 'status'
     command "check-#{type}.rb"
-    handlers %w( mailer )
+    handlers [ 'default' ]
     subscribers [ 'all' ]
     additional occurrences: 3
   end
