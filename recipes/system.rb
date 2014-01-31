@@ -21,7 +21,7 @@ include_recipe "monitor::default"
     command "check-#{type}.rb"
     handlers [ 'default' ]
     subscribers [ 'all' ]
-    additional occurrences: 3
+    additional occurrences: node[:monitor][:checks]["system_#{type}"][:occurrences]
   end
 
 end

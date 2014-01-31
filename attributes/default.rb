@@ -19,3 +19,19 @@ default["monitor"]["metric_handlers"] = ["debug"]
 
 default["monitor"]["client_extension_dir"] = "/etc/sensu/extensions/client"
 default["monitor"]["server_extension_dir"] = "/etc/sensu/extensions/server"
+
+# Checks
+default["monitor"]["checks"] = {
+  "system_cpu" => {
+    "occurrences" => 10
+  },
+  "system_load" => {
+    "occurrences" => 3
+  },
+  "system_disk" => {
+    "occurrences" => 1
+  },
+  "system_ram" => {
+    "occurrences" => 3
+  }
+}
