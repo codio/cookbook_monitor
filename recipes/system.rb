@@ -18,7 +18,7 @@ include_recipe "monitor::default"
 
   sensu_check "system_#{type}" do
     type 'status'
-    command "check-#{type}.rb"
+    command "check-#{type}.rb#{node[:monitor][:checks]["system_#{type}"][:command_options]}"
     handlers [ 'default' ]
     subscribers [ 'all' ]
     additional occurrences: node[:monitor][:checks]["system_#{type}"][:occurrences]
