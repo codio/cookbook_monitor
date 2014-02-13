@@ -23,18 +23,22 @@ default["monitor"]["server_extension_dir"] = "/etc/sensu/extensions/server"
 # Checks
 default["monitor"]["checks"] = {
   "system_cpu" => {
+    "enabled" => true,
     "occurrences" => 10,
     "command_options" => ""
   },
   "system_load" => {
+    "enabled" => true,
     "occurrences" => 3,
     "command_options" => ""
   },
   "system_disk" => {
+    "enabled" => true,
     "occurrences" => 1,
     "command_options" => ""
   },
   "system_ram" => {
+    "enabled" => true,
     "occurrences" => 3,
     "command_options" => ""
   }

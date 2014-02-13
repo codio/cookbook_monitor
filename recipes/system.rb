@@ -9,19 +9,29 @@ include_recipe "monitor::default"
 
 %w( load cpu disk ram ).each do |type|
 
-  url = "https://raw.github.com/sensu/sensu-community-plugins/master/plugins/system/check-#{type}.rb"
-  remote_file "/etc/sensu/plugins/check-#{type}.rb" do
-    source url
-    mode 0755
-    only_if "curl -s -o /dev/null -w \"%{http_code}\" #{url} | grep 200"
-  end
+  if node[:monitor][:checks]["system_#{type}"][:enabled]
 
-  sensu_check "system_#{type}" do
-    type 'status'
-    command "check-#{type}.rb#{node[:monitor][:checks]["system_#{type}"][:command_options]}"
-    handlers [ 'default' ]
-    subscribers [ 'all' ]
-    additional occurrences: node[:monitor][:checks]["system_#{type}"][:occurrences]
+    url = "https://raw.github.com/sensu/sensu-community-plugins/master/plugins/system/check-#{type}.rb"
+    remote_file "/etc/sensu/plugins/check-#{type}.rb" do
+      source url
+      mode 0755
+      only_if "curl -s -o /dev/null -w \"%{http_code}\" #{url} | grep 200"
+    end
+
+    sensu_check "system_#{type}" do
+      type 'status'
+      command "check-#{type}.rb#{node[:monitor][:checks]["system_#{type}"][:command_options]}"
+      handlers [ 'default' ]
+      subscribers [ 'all' ]
+      additional occurrences: node[:monitor][:checks]["system_#{type}"][:occurrences]
+    end
+
+  else
+
+    sensu_check "system_#{type}" do
+      action :delete
+    end
+
   end
 
 end
