@@ -16,18 +16,27 @@ remote_file '/etc/sensu/handlers/twiliosms.rb' do
   only_if "curl -s -o /dev/null -w \"%{http_code}\" #{url} | grep 200"
 end
 
-# Fetch the SMTP username and password from the `sensu/twiliosms` encrypted data bag.
+# Fetch the sid, token and number from the `sensu/twiliosms` encrypted data bag.
 search(:sensu, 'id:twiliosms') do |s|
+  log 'Loaded sensu:twiliosms'
   bag = Chef::EncryptedDataBagItem.load('sensu', 'twiliosms')
+  log bag.inspect
 
   sensu_snippet 'twiliosms' do
     content sid:    bag['sid'],
             token:  bag['token'],
-            number: bag['number']
+            number: bag['number'],
+            recipients: {
+              '+447791503309' => {
+                sensu_roles: ['all'],
+                sensu_checks: [],
+                sensu_level: 1
+              }
+            }
   end
 end
 
-# Create the `mailer` handler.
+# Create the `twiliosms` handler.
 sensu_handler "twiliosms" do
   type "pipe"
   command "/etc/sensu/handlers/twiliosms.rb"

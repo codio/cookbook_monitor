@@ -14,7 +14,7 @@ default["monitor"]["use_statsd_input"] = false
 
 default["monitor"]["sudo_commands"] = Array.new
 
-default["monitor"]["default_handlers"] = ["debug", "mailer"]
+default["monitor"]["default_handlers"] = ["debug", "mailer", "twiliosms"]
 default["monitor"]["metric_handlers"] = ["debug"]
 
 default["monitor"]["client_extension_dir"] = "/etc/sensu/extensions/client"
