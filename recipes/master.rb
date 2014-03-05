@@ -29,6 +29,7 @@ include_recipe "sensu::rabbitmq"
 include_recipe "sensu::redis"
 
 include_recipe "monitor::_worker"
+include_recipe "monitor::chef_nodes"
 
 include_recipe "sensu::api_service"
 include_recipe "sensu::dashboard_service"
