@@ -29,7 +29,7 @@ default["monitor"]["checks"] = {
   },
   "system_load" => {
     "enabled" => true,
-    "occurrences" => 3,
+    "occurrences" => 1,
     "command_options" => ""
   },
   "system_disk" => {
@@ -39,7 +39,7 @@ default["monitor"]["checks"] = {
   },
   "system_ram" => {
     "enabled" => true,
-    "occurrences" => 3,
+    "occurrences" => 2,
     "command_options" => ""
   }
 }
