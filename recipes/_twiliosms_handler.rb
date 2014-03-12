@@ -8,7 +8,7 @@
 sensu_gem 'twilio-ruby'
 sensu_gem 'rest-client'
 
-# Fetch the `mailer` handler script from the sensu/sensu-community-plugins repo.
+# Fetch the handler script from the sensu/sensu-community-plugins repo.
 url = 'https://raw.github.com/sensu/sensu-community-plugins/master/handlers/notification/twiliosms.rb'
 remote_file '/etc/sensu/handlers/twiliosms.rb' do
   source url
@@ -18,21 +18,21 @@ end
 
 # Fetch the sid, token and number from the `sensu/twiliosms` encrypted data bag.
 search(:sensu, 'id:twiliosms') do |s|
-  log 'Loaded sensu:twiliosms'
   bag = Chef::EncryptedDataBagItem.load('sensu', 'twiliosms')
-  log bag.inspect
+
+  hash = {
+    sid: bag['sid'],
+    token:  bag['token'],
+    number: bag['number'],
+    recipients: {}
+  }
+
+  bag['recipients'].each do |r|
+    hash[:recipients][r['number']] = { sensu_roles: ['all'], sensu_checks: [], sensu_level: 2 }
+  end
 
   sensu_snippet 'twiliosms' do
-    content sid:    bag['sid'],
-            token:  bag['token'],
-            number: bag['number'],
-            recipients: {
-              '+447791503309' => {
-                sensu_roles: ['all'],
-                sensu_checks: [],
-                sensu_level: 1
-              }
-            }
+    content hash
   end
 end
 

@@ -31,7 +31,7 @@ sensu_client node.name do
   else
     address node["ipaddress"]
   end
-  subscriptions node["roles"] + ["all"]
+  subscriptions node["roles"] + [node.chef_environment] + ["all"]
   additional client_attributes
 end
 
