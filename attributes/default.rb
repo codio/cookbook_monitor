@@ -43,3 +43,6 @@ default["monitor"]["checks"] = {
     "command_options" => ""
   }
 }
+
+default[:monitor][:rabbitmq_alive][:username] = 'guest'
+default[:monitor][:rabbitmq_alive][:password] = 'guest'

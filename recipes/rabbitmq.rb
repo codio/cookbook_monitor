@@ -20,16 +20,44 @@
 include_recipe "monitor::default"
 
 sensu_gem "carrot-top"
+sensu_gem "rest-client"
 
-cookbook_file "/etc/sensu/plugins/rabbitmq-overview-metrics.rb" do
-  source "plugins/rabbitmq-overview-metrics.rb"
+
+url = "https://raw.github.com/sensu/sensu-community-plugins/master/plugins/rabbitmq/rabbitmq-alive.rb"
+remote_file "/etc/sensu/plugins/rabbitmq-alive.rb" do
+  source url
   mode 0755
+  only_if "curl -s -o /dev/null -w \"%{http_code}\" #{url} | grep 200"
 end
 
-sensu_check "rabbitmq_overview_metrics" do
-  type "metric"
-  command "rabbitmq-overview-metrics.rb"
-  handlers ["metrics"]
-  standalone true
-  interval 30
+url = "https://raw.github.com/sensu/sensu-community-plugins/master/plugins/rabbitmq/check-rabbitmq-messages.rb"
+remote_file "/etc/sensu/plugins/check-rabbitmq-messages.rb" do
+  source url
+  mode 0755
+  only_if "curl -s -o /dev/null -w \"%{http_code}\" #{url} | grep 200"
+end
+
+
+# Fetch RabbitMQ data bag
+search(:rabbitmq, "id:#{node.chef_environment}") do |keys|
+  if keys['default_user'].has_key? 'encrypted_data'
+    keys = Chef::EncryptedDataBagItem.load('rabbitmq', node.chef_environment)
+  end
+
+  username = keys['default_user']
+  password = keys['default_pass']
+
+  sensu_check "rabbitmq_alive" do
+    type "status"
+    command "rabbitmq-alive.rb -u #{username} -p #{password}"
+    handlers [ 'default' ]
+    subscribers [ 'worker' ]
+  end
+
+  sensu_check "rabbitmq_messages" do
+    type "status"
+    command "check-rabbitmq-messages.rb --user #{username} --password #{password}"
+    handlers [ 'default' ]
+    subscribers [ 'worker' ]
+  end
 end

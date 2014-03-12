@@ -45,7 +45,7 @@
 require "rubygems"
 require "sensu-handler"
 require "spice"
-require "rest_client"
+require "rest-client"
 require "timeout"
 
 class ChefNode < Sensu::Handler
