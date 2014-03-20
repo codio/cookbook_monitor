@@ -23,14 +23,14 @@ sensu_gem "carrot-top"
 sensu_gem "rest-client"
 
 
-url = "https://raw.github.com/sensu/sensu-community-plugins/master/plugins/rabbitmq/rabbitmq-alive.rb"
+url = "https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/plugins/rabbitmq/rabbitmq-alive.rb"
 remote_file "/etc/sensu/plugins/rabbitmq-alive.rb" do
   source url
   mode 0755
   only_if "curl -s -o /dev/null -w \"%{http_code}\" #{url} | grep 200"
 end
 
-url = "https://raw.github.com/sensu/sensu-community-plugins/master/plugins/rabbitmq/check-rabbitmq-messages.rb"
+url = "https://raw.githubusercontent.com/joelmoss/sensu-community-plugins/rabbitmq_message_check/plugins/rabbitmq/check-rabbitmq-messages.rb"
 remote_file "/etc/sensu/plugins/check-rabbitmq-messages.rb" do
   source url
   mode 0755
@@ -54,9 +54,14 @@ search(:rabbitmq, "id:#{node.chef_environment}") do |keys|
     subscribers [ 'worker' ]
   end
 
+  # Ignore these queues
+  ignored_queues = ["acv2server-tasks-errors", "aliveness-test", "backends-migrator",
+                    "backends-migrator-error", "filewatcher-events-delay-server",
+                    "filewatcher-events-delay-sharejs", "fs-migrator", "fs-migrator-error"].join(',')
+
   sensu_check "rabbitmq_messages" do
     type "status"
-    command "check-rabbitmq-messages.rb --user #{username} --password #{password}"
+    command "check-rabbitmq-messages.rb --user #{username} --password #{password} -w 50 -c 200 -i #{ignored_queues}"
     handlers [ 'default' ]
     subscribers [ 'worker' ]
   end
