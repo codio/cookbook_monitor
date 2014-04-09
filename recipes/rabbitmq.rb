@@ -61,7 +61,7 @@ search(:rabbitmq, "id:#{node.chef_environment}") do |keys|
 
   sensu_check "rabbitmq_messages" do
     type "status"
-    command "check-rabbitmq-messages.rb --user #{username} --password #{password} -w 50 -c 200 -i #{ignored_queues}"
+    command "check-rabbitmq-messages.rb --user #{username} --password #{password} -w 100 -c 250 -i #{ignored_queues}"
     handlers [ 'default' ]
     subscribers [ 'worker' ]
   end
