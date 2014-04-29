@@ -6,7 +6,7 @@
 #
 
 # remote_file "/etc/sensu/plugins/check-procs.rb" do
-#   source "https://raw.github.com/sensu/sensu-community-plugins/master/plugins/processes/check-procs.rb"
+#   source "https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/plugins/processes/check-procs.rb"
 #   mode 0755
 # end
 

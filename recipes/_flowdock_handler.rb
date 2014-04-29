@@ -10,7 +10,7 @@
 # sensu_gem 'flowdock'
 
 # remote_file '/etc/sensu/handlers/flowdock.rb' do
-#   source 'https://raw.github.com/sensu/sensu-community-plugins/master/handlers/notification/flowdock.rb'
+#   source 'https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/handlers/notification/flowdock.rb'
 #   mode 0755
 # end
 

@@ -9,7 +9,7 @@ include_recipe "monitor::default"
 
 %w( load cpu disk ram ).each do |type|
 
-  url = "https://raw.github.com/sensu/sensu-community-plugins/master/plugins/system/check-#{type}.rb"
+  url = "https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/plugins/system/check-#{type}.rb"
   remote_file "/etc/sensu/plugins/check-#{type}.rb" do
     source url
     mode 0755

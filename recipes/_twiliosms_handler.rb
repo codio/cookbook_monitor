@@ -9,7 +9,7 @@ sensu_gem 'twilio-ruby'
 sensu_gem 'rest-client'
 
 # Fetch the handler script from the sensu/sensu-community-plugins repo.
-url = 'https://raw.github.com/sensu/sensu-community-plugins/master/handlers/notification/twiliosms.rb'
+url = 'https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/handlers/notification/twiliosms.rb'
 remote_file '/etc/sensu/handlers/twiliosms.rb' do
   source url
   mode 0755

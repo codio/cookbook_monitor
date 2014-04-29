@@ -5,7 +5,7 @@
 
 # sensu_gem "chef"
 
-# url = "https://raw.github.com/sensu/sensu-community-plugins/master/plugins/chef/check-chef-nodes.rb"
+# url = "https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/plugins/chef/check-chef-nodes.rb"
 # remote_file "/etc/sensu/plugins/check-chef-nodes.rb" do
 #   source url
 #   mode 0755

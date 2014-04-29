@@ -9,7 +9,7 @@ sensu_gem 'mail'
 
 # Fetch the `mailer` handler script from the sensu/sensu-community-plugins repo.
 remote_file '/etc/sensu/handlers/mailer.rb' do
-  source 'https://raw.github.com/sensu/sensu-community-plugins/master/handlers/notification/mailer.rb'
+  source 'https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/handlers/notification/mailer.rb'
   mode 0755
 end
 

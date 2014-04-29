@@ -4,10 +4,10 @@ maintainer_email "portertech@gmail.com"
 license          "Apache 2.0"
 description      "A cookbook for monitoring services, using Sensu, a monitoring framework."
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          "0.15.0"
+version          "0.16.0"
 
 depends 'apt'
-depends 'sensu', '>= 0.8'
+depends 'sensu'
 depends 'sudo'
 depends 'python'
 depends 'logrotate'
