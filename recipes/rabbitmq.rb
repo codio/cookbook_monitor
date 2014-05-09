@@ -39,13 +39,13 @@ end
 
 
 # Fetch RabbitMQ data bag
-search(:rabbitmq, "id:#{node.chef_environment}") do |keys|
-  if keys['default_user'].has_key? 'encrypted_data'
-    keys = Chef::EncryptedDataBagItem.load('rabbitmq', node.chef_environment)
+search(:rabbitmq, "id:password") do |keys|
+  if keys['password'].has_key? 'encrypted_data'
+    keys = Chef::EncryptedDataBagItem.load('rabbitmq', 'password')
   end
 
-  username = keys['default_user']
-  password = keys['default_pass']
+  username = 'rabbitmq'
+  password = keys['password']
 
   sensu_check "rabbitmq_alive" do
     type "status"
