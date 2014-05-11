@@ -26,3 +26,18 @@ include_recipe "monitor::default"
   end
 
 end
+
+# Check that sudoers is still owned by root
+url = "https://raw.githubusercontent.com/sensu/sensu-community-plugins/master/plugins/processes/check-cmd.rb"
+remote_file "/etc/sensu/plugins/check-cmd.rb" do
+  source url
+  mode 0755
+  only_if "curl -s -o /dev/null -w \"%{http_code}\" #{url} | grep 200"
+end
+
+sensu_check "sudoers-permission" do
+  type 'status'
+  command "check-cmd.rb -c 'find /usr/lib/sudo/sudoers.so -user 0' -o '/usr/lib/sudo/sudoers.so'"
+  handlers [ 'default' ]
+  subscribers [ 'node_fileserver' ]
+end
