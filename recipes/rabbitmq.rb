@@ -61,7 +61,7 @@ search(:rabbitmq, "id:password") do |keys|
 
   sensu_check "rabbitmq_messages" do
     type "status"
-    command "check-rabbitmq-messages.rb --user #{username} --password #{password} -w 100 -c 250 -i #{ignored_queues}"
+    command "check-rabbitmq-messages.rb --user #{username} --password #{password} --port 15672 -w 100 -c 250 -i #{ignored_queues}"
     handlers [ 'default' ]
     subscribers [ 'node_worker' ]
   end
