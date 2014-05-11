@@ -51,7 +51,7 @@ search(:rabbitmq, "id:password") do |keys|
     type "status"
     command "rabbitmq-alive.rb -u #{username} -p #{password}"
     handlers [ 'default' ]
-    subscribers [ 'worker' ]
+    subscribers [ 'node_worker' ]
   end
 
   # Ignore these queues
@@ -63,6 +63,6 @@ search(:rabbitmq, "id:password") do |keys|
     type "status"
     command "check-rabbitmq-messages.rb --user #{username} --password #{password} -w 100 -c 250 -i #{ignored_queues}"
     handlers [ 'default' ]
-    subscribers [ 'worker' ]
+    subscribers [ 'node_worker' ]
   end
 end
