@@ -44,5 +44,11 @@ default["monitor"]["checks"] = {
   }
 }
 
+
+default[:monitor][:rabbitmq][:port] = 15672
+
 default[:monitor][:rabbitmq_alive][:username] = 'guest'
 default[:monitor][:rabbitmq_alive][:password] = 'guest'
+
+default[:monitor][:rabbitmq_messages][:warning_level] = 100
+default[:monitor][:rabbitmq_messages][:critical_level] = 250

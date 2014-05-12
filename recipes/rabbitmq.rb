@@ -46,10 +46,11 @@ search(:rabbitmq, "id:password") do |keys|
 
   username = 'rabbitmq'
   password = keys['password']
+  port = node[:monitor][:rabbitmq][:port]
 
   sensu_check "rabbitmq_alive" do
     type "status"
-    command "rabbitmq-alive.rb -u #{username} -p #{password}"
+    command "rabbitmq-alive.rb -u #{username} -p #{password} --port #{port}"
     handlers [ 'default' ]
     subscribers [ 'node_worker' ]
   end
@@ -59,9 +60,13 @@ search(:rabbitmq, "id:password") do |keys|
                     "backends-migrator-error", "filewatcher-events-delay-server",
                     "filewatcher-events-delay-sharejs", "fs-migrator", "fs-migrator-error"].join(',')
 
+  warning_level = node[:monitor][:rabbitmq_messages][:warning_level]
+  critical_level = node[:monitor][:rabbitmq_messages][:critical_level]
+  options = " --port #{port} -w #{warning_level} -c #{critical_level} -i #{ignored_queues}"
+
   sensu_check "rabbitmq_messages" do
     type "status"
-    command "check-rabbitmq-messages.rb --user #{username} --password #{password} --port 15672 -w 100 -c 250 -i #{ignored_queues}"
+    command "check-rabbitmq-messages.rb --user #{username} --password #{password}#{options}"
     handlers [ 'default' ]
     subscribers [ 'node_worker' ]
   end
