@@ -39,5 +39,26 @@ sensu_check "sudoers-permission" do
   type 'status'
   command "check-cmd.rb -c 'find /usr/lib/sudo/sudoers.so -user 0' -o '/usr/lib/sudo/sudoers.so'"
   handlers [ 'default' ]
-  subscribers [ 'node_fileserver' ]
+  subscribers [ 'node_fileserver', 'node_fileserver_old' ]
+end
+
+sensu_check "claptrap" do
+  type 'status'
+  command "check-cmd.rb -c 'pgrep claptrap'"
+  handlers [ 'default' ]
+  subscribers [ 'node_fileserver', 'node_fileserver_old' ]
+end
+
+sensu_check "pier" do
+  type 'status'
+  command "check-cmd.rb -c 'pgrep pier'"
+  handlers [ 'default' ]
+  subscribers [ 'node_fileserver', 'node_fileserver_old' ]
+end
+
+sensu_check "docker" do
+  type 'status'
+  command "check-cmd.rb -c 'pgrep docker'"
+  handlers [ 'default' ]
+  subscribers [ 'node_fileserver', 'node_fileserver_old' ]
 end
